@@ -3,6 +3,10 @@
  */
 package bitcamp.myapp;
 
+import java.util.Scanner;
+
+import javax.sound.sampled.SourceDataLine;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
@@ -12,13 +16,29 @@ public class App {
         System.out.println("나의 목록 관리 시스템");
         System.out.println("------------------------");
 
-        int no = 100;
-        String name = "홍길동";
-        int age = 20;
-        boolean working = true;
-        char gender = 'M';
-        float leftEye = 1.5f;
-        float rightEye = 1.0f;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("번호? ");
+        int no = scanner.nextInt();
+
+        System.out.println("이름? ");
+        String name= scanner.next();
+
+        System.out.println("나이? ");
+        int age = scanner.nextInt();
+
+        System.out.println("재직중? ");
+        boolean working = scanner.nextBoolean();
+
+        System.out.println("성별(남자: M, 여자: W)? ");
+        String str = scanner.next();
+        char gender = str.charAt(0);
+
+        System.out.println("시력(왼쪽, 오른쪽)");
+        float leftEye = scanner.nextFloat();
+        float rightEye = scanner.nextFloat();
+
+        System.out.println("--------------------------------");
 
         System.out.printf("번호 : %d", no);
 

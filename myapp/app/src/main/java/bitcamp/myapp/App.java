@@ -5,51 +5,109 @@ package bitcamp.myapp;
 
 import java.util.Scanner;
 
-import javax.sound.sampled.SourceDataLine;
+import org.checkerframework.checker.units.qual.g;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
 
     public static void main(String[] args) {
-        System.out.println("나의 목록 관리 시스템");
-        System.out.println("------------------------");
+
+        final int MAX_SIZE = 3;
+        int userId = 0;
+        int length = 0;
 
         Scanner scanner = new Scanner(System.in);
+        
+        int[] no = new int[MAX_SIZE];
+        String[] name = new String[MAX_SIZE];
+        String[] email = new String[MAX_SIZE];
+        String[] password = new String[MAX_SIZE];
+        char[] gender = new char[MAX_SIZE];
 
-        System.out.println("번호? ");
-        int no = scanner.nextInt();
+        //회원정보 등록
+        for(int i = 0; i < MAX_SIZE; i++) {
 
-        System.out.println("이름? ");
-        String name= scanner.next();
+            inputMember(scanner, i, name, email, password, gender, no, userId);
+            
+            length++;
 
-        System.out.println("나이? ");
-        int age = scanner.nextInt();
+            if(!promptContinue(scanner)) {
+                break;
+            }
 
-        System.out.println("재직중? ");
-        boolean working = scanner.nextBoolean();
+        }
 
-        System.out.println("성별(남자: M, 여자: W)? ");
-        String str = scanner.next();
-        char gender = str.charAt(0);
+        printMembers(MAX_SIZE, no, name, email, gender);
+        
+        scanner.close();
+    }
 
-        System.out.println("시력(왼쪽, 오른쪽)");
-        float leftEye = scanner.nextFloat();
-        float rightEye = scanner.nextFloat();
+    static void printTitle() {
+        System.out.println("나의 목록 관리 시스템");
+        System.out.println("------------------------");
+    }
 
-        System.out.println("--------------------------------");
+    static void inputMember(Scanner scanner, int i, 
+        String[] name, String[] email, String[] password, char[] gender, int[] no, int userId) {
 
-        System.out.printf("번호 : %d", no);
+        no[i] = userId;
+        
+        System.out.print("이름? ");
+        name[i] = scanner.next();
 
-        System.out.printf("나이 : %d", age);
+        System.out.print("이메일? ");
+        email[i] = scanner.next();
 
-        System.out.printf("이름 : %s\n", name);
+        System.out.print("암호? ");
+        password[i] = scanner.next();
 
-        System.out.printf("재직자 : %b\n", working);
+        loop: while (true) {
 
-        System.out.printf("성별 - 남자(M), 여자(W) : %c\n", gender);
+            System.out.print("성별: ");
+            System.out.print("  1. 남자 : ");
+            System.out.print("  2. 여자 : ");
+            System.out.print(">  ");
+            String menuNo = scanner.next();
+            scanner.nextLine(); // 다른 메소드에서 작업을 할 때 방해되지 않도록 줄바꿈 코드를 제거함.
 
-        System.out.printf("좌측시력 - %f, 우측시력 - %f\n", leftEye, rightEye);
+            switch (menuNo) {
+                case "1":
+                    gender[i] = 'M';
+                    break loop;
+                case "2":
+                    gender[i] = 'W';
+                    break loop;
+                default:
+                    System.out.println("무효한 번호입니다.");
+            }
+
+        }
+
+        no[i] = userId++;
+
+        System.out.println("------------------------");
+
+    }
+
+    static boolean promptContinue(Scanner scanner) {
+
+        System.out.print("계속 하시겠습니까?(Y/n)");
+        String str = scanner.nextLine(); // next를 실행하고 남아있는 줄바꿈을 제거
+        
+        if(!str.equalsIgnoreCase("Y") && !str.equals("")) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    static void printMembers(int MAX_SIZE, int[] no, String[] name, String[] email, char[] gender) {
+
+        for(int i = 0; i < MAX_SIZE; i++) {
+            System.out.println("번호, 이름, 이메일, 성별");
+            System.out.println("------------------------");
+            System.out.printf("%d, %s, %s, %c\n", no[i], name[i], email[i], gender[i]);
+        }
+
     }
 }

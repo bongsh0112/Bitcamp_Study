@@ -5,28 +5,26 @@ package bitcamp.myapp;
 
 import java.util.Scanner;
 
-import org.checkerframework.checker.units.qual.g;
-
 public class App {
+
+    static final int MAX_SIZE = 3;
+
+    static int[] no = new int[MAX_SIZE];
+    static String[] name = new String[MAX_SIZE];
+    static String[] email = new String[MAX_SIZE];
+    static String[] password = new String[MAX_SIZE];
+    static char[] gender = new char[MAX_SIZE];
+    static int userId = 0;
+    static int length = 0;
+
 
     public static void main(String[] args) {
 
-        final int MAX_SIZE = 3;
-        int userId = 0;
-        int length = 0;
-
-        Scanner scanner = new Scanner(System.in);
-        
-        int[] no = new int[MAX_SIZE];
-        String[] name = new String[MAX_SIZE];
-        String[] email = new String[MAX_SIZE];
-        String[] password = new String[MAX_SIZE];
-        char[] gender = new char[MAX_SIZE];
-
+        scanner = new Scanner(System.in);
         //회원정보 등록
         for(int i = 0; i < MAX_SIZE; i++) {
 
-            inputMember(scanner, i, name, email, password, gender, no, userId);
+            inputMember(i, userId);
             
             length++;
 
@@ -36,9 +34,7 @@ public class App {
 
         }
 
-        printMembers(MAX_SIZE, no, name, email, gender);
-        
-        scanner.close();
+        printMembers();
     }
 
     static void printTitle() {
@@ -46,8 +42,7 @@ public class App {
         System.out.println("------------------------");
     }
 
-    static void inputMember(Scanner scanner, int i, 
-        String[] name, String[] email, String[] password, char[] gender, int[] no, int userId) {
+    static void inputMember(int i) {
 
         no[i] = userId;
         
@@ -88,7 +83,7 @@ public class App {
 
     }
 
-    static boolean promptContinue(Scanner scanner) {
+    static boolean promptContinue() {
 
         System.out.print("계속 하시겠습니까?(Y/n)");
         String str = scanner.nextLine(); // next를 실행하고 남아있는 줄바꿈을 제거
@@ -101,9 +96,9 @@ public class App {
 
     }
 
-    static void printMembers(int MAX_SIZE, int[] no, String[] name, String[] email, char[] gender) {
+    static void printMembers(int length) {
 
-        for(int i = 0; i < MAX_SIZE; i++) {
+        for(int i = 0; i < length; i++) {
             System.out.println("번호, 이름, 이메일, 성별");
             System.out.println("------------------------");
             System.out.printf("%d, %s, %s, %c\n", no[i], name[i], email[i], gender[i]);

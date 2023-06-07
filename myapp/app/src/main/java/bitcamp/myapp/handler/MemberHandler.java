@@ -1,4 +1,5 @@
 package bitcamp.myapp.handler;
+import bitcamp.util.Prompt;
 
 public class MemberHandler {
 

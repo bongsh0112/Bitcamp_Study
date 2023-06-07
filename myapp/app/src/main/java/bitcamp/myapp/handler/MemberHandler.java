@@ -47,9 +47,9 @@ public class MemberHandler {
   }
 
   public static void viewMember() {
-    String memberNo = Prompt.inputString("번호? ");
+    int memberNo = Prompt.inputInt("번호? ");
     for (int i = 0; i < length; i++) {
-      if (no[i] == Integer.parseInt(memberNo)) {
+      if (no[i] == memberNo) {
         System.out.printf("이름: %s\n", name[i]);
         System.out.printf("이메일: %s\n", email[i]);
         System.out.printf("성별: %s\n", toGenderString(gender[i]));
@@ -60,7 +60,7 @@ public class MemberHandler {
   }
 
   public static void updateMember() {
-    int n = Integer.parseInt(Prompt.inputString("번호? "));
+    int n = Prompt.inputInt("번호? ");
     name[n - 1] = Prompt.inputString("이름(홍길동)?");
     email[n - 1] = Prompt.inputString("이메일(hong@test.com)?");
     password[n - 1] = Prompt.inputString("새암호?");
@@ -94,7 +94,7 @@ public class MemberHandler {
   }
 
   public static void deleteMember() {
-    int n = Integer.parseInt(Prompt.inputString("삭제 할 번호? "));
+    int n = Prompt.inputInt("삭제 할 번호? ");
     int deletedIndex = indexOf(n);
     if(deletedIndex == 1) {
       for (int i = 0; i < no.length; i++) {

@@ -478,3 +478,5 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/java,c++,macos,eclipse,visualstudiocode,intellij,gradle,maven,node
 # Ignore Gradle build output directory
 build
+
+.DS_STORE

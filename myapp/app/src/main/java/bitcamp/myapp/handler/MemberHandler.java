@@ -22,14 +22,14 @@ public class MemberHandler {
       return;
     }
 
-    Member m = new Member();
+    String name = Prompt.inputString("이름? ");
+    String email = Prompt.inputString("이메일? ");
+    String password = Prompt.inputString("암호? ");
+    char gender = inputGender((char)userId);
 
-    m.name = Prompt.inputString("이름? ");
-    m.email = Prompt.inputString("이메일? ");
-    m.password = Prompt.inputString("암호? ");
-    m.gender = inputGender((char)userId);
+    Member m = new Member(userId, name, email, password, gender);
 
-    m.no = userId++;
+    userId++;
     members[length++] = m;
   }
 
@@ -51,9 +51,9 @@ public class MemberHandler {
     for (int i = 0; i < length; i++) {
       Member m = members[i];
       if (m.no == memberNo) {
-        System.out.printf("이름: %s\n", m.name);
-        System.out.printf("이메일: %s\n", m.email);
-        System.out.printf("성별: %s\n", toGenderString(m.gender));
+        System.out.printf("이름: %s\n", m.getName());
+        System.out.printf("이메일: %s\n", m.getEmail());
+        System.out.printf("성별: %s\n", toGenderString(m.getGender()));
         return;
       }
     }
@@ -65,13 +65,13 @@ public class MemberHandler {
     for (int i = 0; i < length; i++) {
       Member m = members[i];
       if (m.no == Integer.parseInt(memberNo)) {
-        System.out.printf("이름(%s)? ", m.name);
-        m.name = Prompt.inputString("");
-        System.out.printf("이메일(%s)? ", m.email);
-        m.email = Prompt.inputString("");
-        System.out.printf("새암호? ");
-        m.password = Prompt.inputString("");
-        m.gender = inputGender(m.gender);
+        System.out.printf("이름(%s)? ", m.getName());
+        m.setName(Prompt.inputString(""));
+        System.out.printf("이메일(%s)? ", m.getEmail());
+        m.setEmail(Prompt.inputString(""));
+        System.out.print("새암호? ");
+        m.setPassword(Prompt.inputString(""));
+        m.setGender(inputGender(m.gender));
         return;
       }
     }

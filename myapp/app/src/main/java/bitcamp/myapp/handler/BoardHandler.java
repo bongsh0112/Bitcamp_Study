@@ -3,140 +3,113 @@ package bitcamp.myapp.handler;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.Prompt;
 
-import java.util.Date;
-
 public class BoardHandler {
 
-  static final int MAX_SIZE = 100;
+  // 인스턴스에 상관없이 공통으로 사용하는 필드라면 스태틱 필드로 선언한다.
+  private static final int MAX_SIZE = 100;
 
-  static int[] no = new int[MAX_SIZE]; // 번호. boardId 집어넣음
-  static Board[] boards = new Board[MAX_SIZE];
+  // 인스턴스 마다 별개로 관리해야 할 데이터라면 논스태틱 필드(인스턴스 필드)로 선언한다.
+  private Prompt prompt;
+  private Board[] boards = new Board[MAX_SIZE];
+  private int length = 0;
 
-  static int length = 0;
+  public BoardHandler(Prompt prompt) {
+    this.prompt = prompt;
+  }
 
-  static final char MALE = 'M';
-  static final char FEMALE = 'W';
-
-  public static void inputBoard() {
-    if (!available()) {
+  // 인스턴스 멤버(필드나 메서드)를 사용하는 경우 인스턴스 메서드로 정의해야 한다.
+  public void inputBoard() {
+    if (!this.available()) {
       System.out.println("더이상 입력할 수 없습니다!");
       return;
     }
 
-    String title = Prompt.inputString("제목? ");
-    String content = Prompt.inputString("내용? ");
-    String writer = Prompt.inputString("작성자? ");
-    String password = Prompt.inputString("암호? ");
+    Board board = new Board();
+    board.setTitle(this.prompt.inputString("제목? "));
+    board.setContent(this.prompt.inputString("내용? "));
+    board.setWriter(this.prompt.inputString("작성자? "));
+    board.setPassword(this.prompt.inputString("암호? "));
 
-    Board board = new Board(title, content, writer, password);
-
-    boards[length++] = board;
+    this.boards[this.length++] = board;
   }
 
-  public static void printBoards() {
+  public void printBoards() {
     System.out.println("---------------------------------------");
-    System.out.println("번호, 제목, 작성자, 조회수, 게시 날짜");
+    System.out.println("번호, 제목, 작성자, 조회수, 등록일");
     System.out.println("---------------------------------------");
 
+    for (int i = 0; i < this.length; i++) {
+      Board board = this.boards[i];
 
-    for (int i = 0; i < length; i++) {
-      Board board = boards[i];
-      Date date = new Date(board.getCreatedDate()); // 게시글의 등록일 값을 가져와서 Date 인스턴스에 저장
       System.out.printf("%d, %s, %s, %d, %tY-%5$tm-%5$td\n",
-              board.getNo(), board.getTitle(), board.getWriter(),
-              board.getViewCount(), date);
+          board.getNo(),
+          board.getTitle(),
+          board.getWriter(),
+          board.getViewCount(),
+          board.getCreatedDate());
     }
   }
 
-  public static void viewBoard() {
-    int boardNo = Prompt.inputInt("번호? ");
-    for (int i = 0; i < length; i++) {
-      Board board = boards[i];
-      if (boards[i].getNo() == boardNo) {
+  public void viewBoard() {
+    String boardNo = this.prompt.inputString("번호? ");
+    for (int i = 0; i < this.length; i++) {
+      Board board = this.boards[i];
+      if (board.getNo() == Integer.parseInt(boardNo)) {
         System.out.printf("제목: %s\n", board.getTitle());
         System.out.printf("내용: %s\n", board.getContent());
         System.out.printf("작성자: %s\n", board.getWriter());
+        System.out.printf("조회수: %s\n", board.getViewCount());
+        System.out.printf("등록일: %tY-%1$tm-%1$td\n", board.getCreatedDate());
+        board.setViewCount(board.getViewCount() + 1);
         return;
       }
     }
     System.out.println("해당 번호의 게시글이 없습니다!");
   }
 
-  public static void updateBoard() {
-    String boardNo = Prompt.inputString("번호? ");
-    for (int i = 0; i < length; i++) {
-      Board board = boards[i];
+  public void updateBoard() {
+    String boardNo = this.prompt.inputString("번호? ");
+    for (int i = 0; i < this.length; i++) {
+      Board board = this.boards[i];
       if (board.getNo() == Integer.parseInt(boardNo)) {
-        System.out.printf("제목(%s)? ", board.getTitle());
-        board.setTitle(Prompt.inputString(""));
-        System.out.printf("내용(%s)? ", board.getContent());
-        board.setContent(Prompt.inputString(""));
-        System.out.print("새암호? ");
-        board.setPassword(Prompt.inputString(""));
-        System.out.printf("작성자(%s)?", board.getWriter());
-        board.setWriter(Prompt.inputString(""));
+        if (!this.prompt.inputString("암호? ").equals(board.getPassword())) {
+          System.out.println("암호가 일치하지 않습니다!");
+          return;
+        }
+        board.setTitle(this.prompt.inputString("제목(%s)? ", board.getTitle()));
+        board.setContent(this.prompt.inputString("내용(%s)? ", board.getContent()));
         return;
       }
     }
     System.out.println("해당 번호의 게시글이 없습니다!");
   }
 
-  private static char inputGender(char gender) {
-    String label;
-    if (gender == 0) {
-      label = "성별?\n";
-    } else {
-      label = String.format("성별(%s)?\n", toGenderString(gender));
-    }
-    while (true) {
-      String menuNo = Prompt.inputString(label +
-              "  1. 남자\n" +
-              "  2. 여자\n" +
-              "> ");
 
-      switch (menuNo) {
-        case "1":
-          return MALE;
-        case "2":
-          return FEMALE;
-        default:
-          System.out.println("무효한 번호입니다.");
-      }
-    }
-  }
-
-  public static void deleteBoard() {
-    int boardNo = Prompt.inputInt("번호? ");
-
-    int deletedIndex = indexOf(boardNo);
+  public void deleteBoard() {
+    int deletedIndex = indexOf(this.prompt.inputInt("번호? "));
     if (deletedIndex == -1) {
-      System.out.println("해당 번호의 회원이 없습니다!");
+      System.out.println("해당 번호의 게시글이 없습니다!");
       return;
     }
 
-    for (int i = deletedIndex; i < length - 1; i++) {
-      boards[i] = boards[i + 1];
+    for (int i = deletedIndex; i < this.length - 1; i++) {
+      this.boards[i] = this.boards[i + 1];
     }
 
-    boards[--length] = null;
+    this.boards[--this.length] = null;
   }
 
-  private static int indexOf(int boardNo) {
-    for (int i = 0; i < length; i++) {
-      Board board = boards[i];
-      if (boardNo == board.getNo()) {
+  private int indexOf(int boardNo) {
+    for (int i = 0; i < this.length; i++) {
+      Board board = this.boards[i];
+      if (board.getNo() == boardNo) {
         return i;
       }
     }
     return -1;
   }
 
-  public static String toGenderString(char gender) {
-    return gender == 'M' ? "남성" : "여성";
+  private boolean available() {
+    return this.length < MAX_SIZE;
   }
-
-  private static boolean available() {
-    return length < MAX_SIZE;
-  }
-
 }

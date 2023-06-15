@@ -1,5 +1,7 @@
 {
   "java.compile.nullAnalysis.mode": "automatic",
   "workbench.colorTheme": "Material Theme Darker",
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "C_Cpp.dimInactiveRegions": false,
+  "workbench.iconTheme": "eq-material-theme-icons"
 }

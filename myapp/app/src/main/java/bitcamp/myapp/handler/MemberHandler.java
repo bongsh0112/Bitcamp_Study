@@ -1,18 +1,21 @@
 package bitcamp.myapp.handler;
 
+import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.ArrayList;
+import bitcamp.util.List;
 import bitcamp.util.Prompt;
 
 public class MemberHandler implements Handler {
 
-  private ArrayList list = new ArrayList();
+  private List list;
   private Prompt prompt;
   private String title;
 
-  public MemberHandler(Prompt prompt, String title) {
+  public MemberHandler(Prompt prompt, String title, List list) {
     this.prompt = prompt;
     this.title = title;
+    this.list = list;
   }
 
   public void execute() {
@@ -56,9 +59,7 @@ public class MemberHandler implements Handler {
     m.setPassword(this.prompt.inputString("암호? "));
     m.setGender(inputGender((char)0));
 
-    if (!this.list.add(m)) {
-      System.out.println("입력 실패입니다!");
-    }
+    this.list.add(m);
   }
 
   private void printMembers() {
@@ -66,7 +67,7 @@ public class MemberHandler implements Handler {
     System.out.println("번호, 이름, 이메일, 성별");
     System.out.println("---------------------------------------");
 
-    Object[] arr = this.list.list();
+    Object[] arr = this.list.toArray();
     for (Object obj : arr) {
       Member m = (Member) obj;
       System.out.printf("%d, %s, %s, %s\n",
@@ -78,7 +79,7 @@ public class MemberHandler implements Handler {
   private void viewMember() {
     int memberNo = this.prompt.inputInt("번호? ");
 
-    Member m = (Member) this.list.get(new Member(memberNo));
+    Member m = (Member) this.findBy(memberNo);
     if (m == null) {
       System.out.println("해당 번호의 회원이 없습니다!");
       return;
@@ -96,7 +97,7 @@ public class MemberHandler implements Handler {
   private void updateMember() {
     int memberNo = this.prompt.inputInt("번호? ");
 
-    Member m = (Member) this.list.get(new Member(memberNo));
+    Member m = (Member) this.findBy(memberNo);
     if (m == null) {
       System.out.println("해당 번호의 회원이 없습니다!");
       return;
@@ -134,8 +135,19 @@ public class MemberHandler implements Handler {
   }
 
   private void deleteMember() {
-    if (!this.list.delete(new Member(this.prompt.inputInt("번호? ")))) {
+    if (!this.list.remove(new Member(this.prompt.inputInt("번호? ")))) {
       System.out.println("해당 번호의 회원이 없습니다!");
     }
+  }
+
+  private Member findBy(int no) {
+    Object[] arr = this.list.toArray();
+    for (Object obj : arr) {
+      Member m = (Member) obj;
+      if (m.getNo() == no) {
+        return m;
+      }
+    }
+    return null;
   }
 }

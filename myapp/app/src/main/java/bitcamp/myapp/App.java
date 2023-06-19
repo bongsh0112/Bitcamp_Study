@@ -2,7 +2,11 @@ package bitcamp.myapp;
 
 import bitcamp.myapp.handler.BoardHandler;
 import bitcamp.myapp.handler.MemberHandler;
+import bitcamp.util.LinkedList;
+import bitcamp.util.ArrayList;
+import bitcamp.util.List;
 import bitcamp.util.Prompt;
+
 
 public class App {
 
@@ -11,10 +15,11 @@ public class App {
     // 기본 생성자를 이용해 Prompt 인스턴스를 준비한다.
     // => 기본 생성자는 Scanner를 키보드와 연결한다. OK
     Prompt prompt = new Prompt();
+    List list = new LinkedList();
 
-    MemberHandler memberHandler = new MemberHandler(prompt, "일반회원");
-    BoardHandler boardHandler = new BoardHandler(prompt, "게시글");
-    BoardHandler readingHandler = new BoardHandler(prompt, "독서록");
+    MemberHandler memberHandler = new MemberHandler(prompt, "일반회원", new ArrayList());
+    BoardHandler boardHandler = new BoardHandler(prompt, "게시글", list);
+    BoardHandler readingHandler = new BoardHandler(prompt, "독서록", list);
 
 
     printTitle();
@@ -29,7 +34,7 @@ public class App {
         printMenu();
       } else if (menuNo.equals("1")) {
         memberHandler.execute();
-      } else if (menuNo.equals("2")) { 
+      } else if (menuNo.equals("2")) {
          boardHandler.execute();
       } else if (menuNo.equals("3")) {
          readingHandler.execute();

@@ -17,6 +17,10 @@ public class Board {
     this.createdDate = System.currentTimeMillis();
   }
 
+  public Board(int no) {
+    this.no = no;
+  }
+
   public int getNo() {
     return no;
   }
@@ -60,5 +64,21 @@ public class Board {
     this.password = password;
   }
 
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
 
+    if (this.getClass() != obj.getClass()) {
+      return false;
+    }
+
+    Board b = (Board) obj;
+
+    if (this.getNo() != b.getNo()) {
+      return false;
+    }
+
+    return true;
+  }
 }

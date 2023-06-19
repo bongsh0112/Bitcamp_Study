@@ -29,10 +29,10 @@ public class App {
         printMenu();
       } else if (menuNo.equals("1")) {
         memberHandler.execute();
-      } else if (menuNo.equals("2")) {
-         boardHandler.service();
+      } else if (menuNo.equals("2")) { 
+         boardHandler.execute();
       } else if (menuNo.equals("3")) {
-         readingHandler.service();
+         readingHandler.execute();
       }  else {
         System.out.println("메뉴 번호가 옳지 않습니다!");
       }

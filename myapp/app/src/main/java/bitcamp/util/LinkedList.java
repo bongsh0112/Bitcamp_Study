@@ -53,51 +53,41 @@ public class LinkedList implements List {
 
     return cursor.value;
   }
-
+  
   @Override
   public Object remove(int index) {
     if (!isValid(index)) {
       return null;
     }
-    // 삭제하려는 값이 있는 노드까지 이동
-    Node cursor = this.head;
-    for (int i = 0; i < index; i++) {
-      cursor = cursor.next;
-    }
-
+    
+    // 삭제하려는 값이 있는 노드까지 이동한다.
     Node prev = null;
-    cursor = this.head;
-
+    Node cursor = this.head;
+    
     for (int i = 0; i < index; i++) {
-      prev = cursor; // 다음 노드로 이동하기 전에 현재 커서가 가리키는 노드를 prev에 보관
-      cursor = cursor.next;
+      prev = cursor; // 다음 노드로 이동하기 전에 현재 커서가 가리키는 노드를 prev에 보관한다.
+      cursor = cursor.next; // 커서를 다음 노드로 이동시킨다.
     }
-
+    
     // 삭제할 값을 리턴할 수 있도록 보관한다.
-    Object obj = cursor.value;
-
+    Object old = cursor.value;
+    
     if (prev == null) {
-      // 삭제할 노드가 시작 노드라면
       head = cursor.next;
-
-      // 삭제할 노드가 시작이자 끝 노드라면
       if (head == null) {
         tail = null;
       }
-
     } else if (cursor.next == null) {
-      // 삭제할 노드가 끝 노드라면
       tail = prev;
       tail.next = null;
     } else {
       prev.next = cursor.next; // 현재 커서의 다음 노드를 현재 커서의 이전 노드와 연결한다.
     }
     size--;
-
     cursor.next = null;
     cursor.value = null;
-
-    return obj;
+    
+    return old;
   }
 
   @Override

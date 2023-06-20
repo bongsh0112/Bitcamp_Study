@@ -4,14 +4,14 @@ public class ArrayList implements List {
   private static final int DEFAULT_SIZE = 10;
 
   private Object[] list = new Object[DEFAULT_SIZE];
-  private int length;
+  private int size;
 
   @Override
   public boolean add(Object obj) {
-    if (this.length == list.length) {
+    if (this.size == list.length) {
       increase();
     }
-    this.list[this.length++] = obj;
+    this.list[this.size++] = obj;
     return true;
   }
 
@@ -26,8 +26,8 @@ public class ArrayList implements List {
 
   @Override
   public Object[] toArray() {
-    Object[] arr = new Object[this.length];
-    for (int i = 0; i < this.length; i++) {
+    Object[] arr = new Object[this.size];
+    for (int i = 0; i < this.size; i++) {
       arr[i] = this.list[i];
     }
     return arr;
@@ -48,16 +48,16 @@ public class ArrayList implements List {
       return false;
     }
 
-    for (int i = deletedIndex; i < this.length - 1; i++) {
+    for (int i = deletedIndex; i < this.size - 1; i++) {
       this.list[i] = this.list[i + 1];
     }
-    this.list[--this.length] = null;
+    this.list[--this.size] = null;
     return true;
   }
 
   @Override
   public int size() {
-    return this.length;
+    return this.size;
   }
 
   @Override
@@ -67,15 +67,15 @@ public class ArrayList implements List {
     }
     Object obj = this.list[index];
 
-    for (int i = index; i < this.length - 1; i++) {
+    for (int i = index; i < this.size - 1; i++) {
       this.list[i] = this.list[i + 1];
     }
-    this.list[--this.length] = null;
+    this.list[--this.size] = null;
     return obj;
   }
 
   private int indexOf(Object obj) {
-    for (int i = 0; i < this.length; i++) {
+    for (int i = 0; i < this.size; i++) {
       Object item = this.list[i];
       if (item.equals(obj)) {
         return i;
@@ -85,6 +85,6 @@ public class ArrayList implements List {
   }
 
   private boolean isValid(int index) {
-    return index >= 0 && index < this.length;
+    return index >= 0 && index < this.size;
   }
 }

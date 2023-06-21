@@ -1,15 +1,6 @@
 package bitcamp.myapp;
 
-import bitcamp.myapp.handler.BoardAddListener;
-import bitcamp.myapp.handler.BoardDeleteListener;
-import bitcamp.myapp.handler.BoardDetailListener;
-import bitcamp.myapp.handler.BoardListListener;
-import bitcamp.myapp.handler.BoardUpdateListener;
-import bitcamp.myapp.handler.MemberAddListener;
-import bitcamp.myapp.handler.MemberDeleteListener;
-import bitcamp.myapp.handler.MemberDetailListener;
-import bitcamp.myapp.handler.MemberListListener;
-import bitcamp.myapp.handler.MemberUpdateListener;
+import bitcamp.myapp.handler.*;
 import bitcamp.util.ArrayList;
 import bitcamp.util.BreadcrumbPrompt;
 import bitcamp.util.LinkedList;
@@ -51,7 +42,13 @@ public class App {
     readingMenu.add(new Menu("변경", new BoardUpdateListener(readingList)));
     readingMenu.add(new Menu("삭제", new BoardDeleteListener(readingList)));
     mainMenu.add(readingMenu);
-
+    
+    Menu helloMenu = new Menu("안녕");
+    helloMenu.addActionListener(new HeaderListener());
+    helloMenu.addActionListener(new HelloListener());
+    helloMenu.addActionListener(new FooterListener());
+    mainMenu.add(helloMenu);
+    
     printTitle();
 
     mainMenu.execute(prompt);

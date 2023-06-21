@@ -1,55 +1,49 @@
 package bitcamp.myapp.handler;
 
-import bitcamp.myapp.vo.Board;
 import bitcamp.myapp.vo.Member;
-import bitcamp.util.ArrayList;
 import bitcamp.util.List;
-import bitcamp.util.Prompt;
+import bitcamp.util.MenuPrompt;
 
 public class MemberHandler implements Handler {
 
   private List list;
-  private Prompt prompt;
+  private MenuPrompt prompt;
   private String title;
 
-  public MemberHandler(Prompt prompt, String title, List list) {
+  public MemberHandler(MenuPrompt prompt, String title, List list) {
     this.prompt = prompt;
     this.title = title;
     this.list = list;
   }
 
   public void execute() {
-    printMenu();
+
+    prompt.appendBreadcrumb(this.title, getMenu());
+
+    prompt.printMenu();
 
     while (true) {
-      String menuNo = prompt.inputString("%s> ", this.title);
-      if (menuNo.equals("0")) {
-        return;
-      } else if (menuNo.equals("menu")) {
-        printMenu();
-      } else if (menuNo.equals("1")) {
-        this.inputMember();
-      } else if (menuNo.equals("2")) {
-        this.printMembers();
-      } else if (menuNo.equals("3")) {
-        this.viewMember();
-      } else if (menuNo.equals("4")) {
-        this.updateMember();
-      } else if (menuNo.equals("5")) {
-        this.deleteMember();
-      } else {
-        System.out.println("메뉴 번호가 옳지 않습니다!");
+      String menuNo = prompt.inputMenu();
+      switch (menuNo) {
+        case "0": prompt.removeBreadcrumb(); return;
+        case "1": this.inputMember(); break;
+        case "2": this.printMembers(); break;
+        case "3": this.viewMember(); break;
+        case "4": this.updateMember(); break;
+        case "5": this.deleteMember(); break;
       }
     }
   }
 
-  private static void printMenu() {
-    System.out.println("1. 등록");
-    System.out.println("2. 목록");
-    System.out.println("3. 조회");
-    System.out.println("4. 변경");
-    System.out.println("5. 삭제");
-    System.out.println("0. 메인");
+  private static String getMenu() {
+    StringBuilder menu = new StringBuilder();
+    menu.append("1. 등록\n");
+    menu.append("2. 목록\n");
+    menu.append("3. 조회\n");
+    menu.append("4. 변경\n");
+    menu.append("5. 삭제\n");
+    menu.append("0. 메인\n");
+    return menu.toString();
   }
 
   private void inputMember() {
@@ -67,9 +61,8 @@ public class MemberHandler implements Handler {
     System.out.println("번호, 이름, 이메일, 성별");
     System.out.println("---------------------------------------");
 
-    Object[] arr = this.list.toArray();
-    for (Object obj : arr) {
-      Member m = (Member) obj;
+    for (int i = 0; i < this.list.size(); i++) {
+      Member m = (Member) this.list.get(i);
       System.out.printf("%d, %s, %s, %s\n",
           m.getNo(), m.getName(), m.getEmail(),
           toGenderString(m.getGender()));
@@ -79,7 +72,7 @@ public class MemberHandler implements Handler {
   private void viewMember() {
     int memberNo = this.prompt.inputInt("번호? ");
 
-    Member m = (Member) this.findBy(memberNo);
+    Member m = this.findBy(memberNo);
     if (m == null) {
       System.out.println("해당 번호의 회원이 없습니다!");
       return;
@@ -97,7 +90,7 @@ public class MemberHandler implements Handler {
   private void updateMember() {
     int memberNo = this.prompt.inputInt("번호? ");
 
-    Member m = (Member) this.findBy(memberNo);
+    Member m = this.findBy(memberNo);
     if (m == null) {
       System.out.println("해당 번호의 회원이 없습니다!");
       return;
@@ -141,13 +134,13 @@ public class MemberHandler implements Handler {
   }
 
   private Member findBy(int no) {
-    Object[] arr = this.list.toArray();
-    for (Object obj : arr) {
-      Member m = (Member) obj;
+    for (int i = 0; i < this.list.size(); i++) {
+      Member m = (Member) this.list.get(i);
       if (m.getNo() == no) {
         return m;
       }
     }
     return null;
   }
+
 }

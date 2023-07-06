@@ -1,6 +1,7 @@
 package bitcamp.myapp.handler;
 
 import bitcamp.myapp.dao.MemberDao;
+import bitcamp.myapp.dao.MemberNetworkDao;
 import bitcamp.myapp.vo.Member;
 import bitcamp.util.ActionListener;
 import bitcamp.util.BreadcrumbPrompt;
@@ -9,7 +10,7 @@ public class MemberDetailListener implements ActionListener {
 
   MemberDao memberDao;
 
-  public MemberDetailListener(MemberDao memberDao) {
+  public MemberDetailListener(MemberNetworkDao memberDao) {
     this.memberDao = memberDao;
   }
 

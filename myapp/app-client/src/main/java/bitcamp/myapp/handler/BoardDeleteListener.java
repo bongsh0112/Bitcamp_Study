@@ -1,14 +1,14 @@
 package bitcamp.myapp.handler;
 
-import bitcamp.myapp.dao.BoardDao;
+import bitcamp.myapp.dao.BoardNetworkDao;
 import bitcamp.util.ActionListener;
 import bitcamp.util.BreadcrumbPrompt;
 
 public class BoardDeleteListener implements ActionListener {
 
-  BoardDao boardDao;
+  BoardNetworkDao boardDao;
 
-  public BoardDeleteListener(BoardDao boardDao) {
+  public BoardDeleteListener(BoardNetworkDao boardDao) {
     this.boardDao = boardDao;
   }
 

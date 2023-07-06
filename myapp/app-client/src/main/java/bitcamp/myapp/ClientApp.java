@@ -3,9 +3,7 @@ package bitcamp.myapp;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
-import bitcamp.myapp.dao.BoardDao;
 import bitcamp.myapp.dao.BoardNetworkDao;
-import bitcamp.myapp.dao.MemberDao;
 import bitcamp.myapp.dao.MemberNetworkDao;
 import bitcamp.myapp.handler.BoardAddListener;
 import bitcamp.myapp.handler.BoardDeleteListener;
@@ -20,6 +18,7 @@ import bitcamp.myapp.handler.MemberDeleteListener;
 import bitcamp.myapp.handler.MemberDetailListener;
 import bitcamp.myapp.handler.MemberListListener;
 import bitcamp.myapp.handler.MemberUpdateListener;
+import bitcamp.net.RequestEntity;
 import bitcamp.util.BreadcrumbPrompt;
 import bitcamp.util.Menu;
 import bitcamp.util.MenuGroup;
@@ -30,9 +29,9 @@ public class ClientApp {
   DataOutputStream out;
   DataInputStream in;
 
-  MemberDao memberDao;
-  BoardDao boardDao;
-  BoardDao readingDao;
+  MemberNetworkDao memberDao;
+  BoardNetworkDao boardDao;
+  BoardNetworkDao readingDao;
 
   BreadcrumbPrompt prompt = new BreadcrumbPrompt();
 
@@ -79,7 +78,8 @@ public class ClientApp {
     mainMenu.execute(prompt);
 
     try {
-      out.writeUTF("quit");
+      out.writeUTF(new RequestEntity().command("quit").toJson());
+
     } catch (Exception e) {
       System.out.println("종료 오류!");
       e.printStackTrace();

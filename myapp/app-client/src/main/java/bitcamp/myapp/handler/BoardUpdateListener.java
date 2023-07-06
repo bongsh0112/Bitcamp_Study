@@ -1,6 +1,7 @@
 package bitcamp.myapp.handler;
 
 import bitcamp.myapp.dao.BoardDao;
+import bitcamp.myapp.dao.BoardNetworkDao;
 import bitcamp.myapp.vo.Board;
 import bitcamp.util.ActionListener;
 import bitcamp.util.BreadcrumbPrompt;
@@ -9,7 +10,7 @@ public class BoardUpdateListener implements ActionListener {
 
   BoardDao boardDao;
 
-  public BoardUpdateListener(BoardDao boardDao) {
+  public BoardUpdateListener(BoardNetworkDao boardDao) {
     this.boardDao = boardDao;
   }
 
